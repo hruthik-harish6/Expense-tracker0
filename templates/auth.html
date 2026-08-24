@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cashflow — Your money, beautifully organized.</title>
+  <meta name="description" content="A private, modern personal finance workspace for tracking income, expenses, budgets and financial trends.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body class="auth-body">
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="grid-fade"></div>
+  <main class="auth-wrap">
+    <section class="hero-panel">
+      <div class="brand-mark"><span class="brand-orb"></span> CASHFLOW</div>
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR PRIVATE MONEY OS</p>
+        <h1>Make every rupee<br><span>tell a story.</span></h1>
+        <p class="hero-sub">Track where your money comes from, where it goes, and what deserves your attention next — without spreadsheets that fight back.</p>
+      </div>
+      <div class="hero-surface">
+        <div class="mini-card large"><span>MONTHLY SIGNAL</span><strong>See it. Understand it. Improve it.</strong><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="mini-card floating"><span>PRIVATE BY DEFAULT</span><strong>Your data follows your account.</strong><small>No demo balance. No fake numbers.</small></div>
+      </div>
+      <div class="hero-foot"><span>01</span><span>Personal finance, redesigned.</span><span>∞</span></div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="auth-tabs"><button class="tab active" data-mode="login">Log in</button><button class="tab" data-mode="register">Create account</button></div>
+        <div id="auth-title"><h2>Welcome back.</h2><p>Pick up exactly where you left off.</p></div>
+        <div id="register-extra" class="hidden">
+          <label>Full name<input id="name" type="text" placeholder="e.g. Hruthik BH" autocomplete="name"></label>
+        </div>
+        <label>Email<input id="email" type="email" placeholder="you@example.com" autocomplete="email"></label>
+        <label>Password<input id="password" type="password" placeholder="At least 8 characters" autocomplete="current-password"></label>
+        <div class="auth-actions"><button id="auth-submit" class="primary-btn wide">Enter workspace <span>→</span></button></div>
+        <div id="auth-error" class="form-error" role="alert"></div>
+        <p class="auth-note">Your workspace starts empty. Every number you see later will come from your account.</p>
+      </div>
+      <div class="auth-side-note"><span class="dot"></span> Local-first development · Production-ready API · Responsive on every screen</div>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

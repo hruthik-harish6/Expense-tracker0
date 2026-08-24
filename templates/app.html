@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cashflow — Workspace</title>
+  <meta name="description" content="Private personal finance workspace.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body class="app-body">
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-lock"><div class="brand-mark"><span class="brand-orb"></span> CASHFLOW</div><button class="icon-btn mobile-close" id="closeSidebar">×</button></div>
+    <div class="workspace-switch"><span class="avatar" id="avatarSmall">HB</span><div><b id="sidebarName">Your workspace</b><small>Personal account</small></div><span>⌄</span></div>
+    <nav class="nav-list">
+      <button class="nav-link active" data-view="overview"><span>◈</span> Overview</button>
+      <button class="nav-link" data-view="transactions"><span>↔</span> Transactions</button>
+      <button class="nav-link" data-view="budgets"><span>◌</span> Budgets</button>
+      <button class="nav-link" data-view="insights"><span>⌁</span> Insights</button>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="tip-card"><span class="tip-icon">✦</span><b>Start with one transaction.</b><p>A clean dashboard is built from your real numbers — never placeholder data.</p><button data-action="add">Add transaction →</button></div>
+    <button class="nav-link bottom-link" data-view="settings"><span>⚙</span> Settings</button>
+    <div class="user-row"><span class="avatar" id="avatar">HB</span><div><b id="profileName">User</b><small id="profileEmail">email</small></div><button class="icon-btn" id="logoutBtn" title="Log out">↗</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><button class="icon-btn menu-btn" id="menuBtn">☰</button><div class="crumb">PERSONAL WORKSPACE <span>·</span> <span id="todayLabel"></span></div><div class="top-actions"><button class="soft-btn" id="exportBtn">↓ Export</button><button class="primary-btn" data-action="add">+ Add transaction</button></div></header>
+    <div class="content">
+      <section class="view active" id="view-overview">
+        <div class="page-head"><div><p class="eyebrow">YOUR MONEY, IN MOTION</p><h1 id="greeting">Good to see you.</h1><p>Everything here is personal to your account — and starts from zero until you add your own data.</p></div><div class="month-control"><button id="prevMonth">‹</button><span id="monthLabel"></span><button id="nextMonth">›</button></div></div>
+        <div class="metric-grid">
+          <article class="metric-card feature"><div class="metric-top"><span>NET BALANCE</span><span class="metric-icon">◈</span></div><strong id="balanceMetric">₹0</strong><small id="balanceHint">Across your tracked activity</small><div class="metric-glow"></div></article>
+          <article class="metric-card"><div class="metric-top"><span>INCOME</span><span class="metric-icon income">↗</span></div><strong id="incomeMetric">₹0</strong><small id="incomeHint">This month</small></article>
+          <article class="metric-card"><div class="metric-top"><span>EXPENSES</span><span class="metric-icon expense">↘</span></div><strong id="expenseMetric">₹0</strong><small id="expenseHint">This month</small></article>
+          <article class="metric-card"><div class="metric-top"><span>SAVINGS RATE</span><span class="metric-icon">◎</span></div><strong id="rateMetric">0%</strong><small id="rateHint">Add income to see a rate</small></article>
+        </div>
+        <div class="chart-grid">
+          <article class="panel chart-panel"><div class="panel-head"><div><span class="panel-kicker">FLOW</span><h3>Cashflow rhythm</h3><p>Income vs expenses across the selected month.</p></div><button class="text-btn" data-view-target="insights">Open report →</button></div><div class="chart-wrap"><canvas id="cashflowChart"></canvas><div id="chartEmpty" class="chart-empty"><span>✦</span><b>No activity yet</b><small>Add your first income or expense to see the chart come alive.</small><button class="soft-btn" data-action="add">Add first transaction</button></div></div></article>
+          <article class="panel donut-panel"><div class="panel-head"><div><span class="panel-kicker">SPEND MAP</span><h3>Where it goes</h3><p>Your biggest expense categories.</p></div></div><div class="donut-wrap"><canvas id="categoryChart"></canvas><div id="donutEmpty" class="chart-empty small"><span>◌</span><b>No spending yet</b><small>Your categories will appear here.</small></div></div><div id="categoryList" class="category-list"></div></article>
+        </div>
+        <div class="bottom-grid">
+          <article class="panel activity-panel"><div class="panel-head"><div><span class="panel-kicker">RECENT</span><h3>Recent activity</h3></div><button class="text-btn" data-view-target="transactions">All transactions →</button></div><div id="recentList" class="activity-list"></div></article>
+          <article class="panel health-panel"><div class="panel-head"><div><span class="panel-kicker">SIGNAL</span><h3>Financial health</h3></div><span id="healthBadge" class="badge muted">Waiting for data</span></div><div class="health-score"><div class="score-ring" id="scoreRing"><span id="scoreValue">—</span></div><div><b id="healthTitle">Your signal starts here.</b><p id="healthText">Once you add a few transactions, Cashflow will summarize your savings behavior without inventing anything.</p></div></div><div class="health-rails"><div><span>Income coverage</span><b id="coverageValue">0%</b></div><div class="rail"><i id="coverageBar"></i></div><div><span>Budget control</span><b id="budgetValue">0%</b></div><div class="rail"><i id="budgetBar"></i></div></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-transactions"><div class="page-head"><div><p class="eyebrow">LEDGER</p><h1>Transactions</h1><p>One clean place for every rupee moving through your account.</p></div><button class="primary-btn" data-action="add">+ Add transaction</button></div><div class="toolbar"><input id="transactionSearch" class="search-input" placeholder="Search by note or category…"><select id="transactionKind"><option value="all">All types</option><option value="income">Income</option><option value="expense">Expense</option></select><select id="transactionCategory"><option value="all">All categories</option>{% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}</select></div><div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>DATE</th><th>DETAIL</th><th>CATEGORY</th><th>TYPE</th><th>AMOUNT</th><th></th></tr></thead><tbody id="transactionsBody"></tbody></table><div id="transactionsEmpty" class="empty-state"><span>↔</span><h3>No transactions match.</h3><p>Add your first transaction or change the filters.</p><button class="soft-btn" data-action="add">Add transaction</button></div></div></div></section>
+
+      <section class="view" id="view-budgets"><div class="page-head"><div><p class="eyebrow">BOUNDARIES</p><h1>Budgets</h1><p>Give each category a limit. Watch your actual spending against it.</p></div><button class="primary-btn" id="budgetBtn">+ Set budget</button></div><div id="budgetGrid" class="budget-grid"></div><div id="budgetEmpty" class="empty-state panel"><span>◌</span><h3>No budgets yet.</h3><p>Create a category limit for the selected month.</p><button class="soft-btn" id="budgetBtn2">Set your first budget</button></div></section>
+
+      <section class="view" id="view-insights"><div class="page-head"><div><p class="eyebrow">REPORTS</p><h1>Insights</h1><p>Patterns from your real activity — no synthetic demo data.</p></div></div><div class="insight-grid"><article class="panel large"><div class="panel-head"><div><span class="panel-kicker">DAILY FLOW</span><h3>Month at a glance</h3></div></div><div class="insight-chart"><canvas id="insightChart"></canvas><div id="insightEmpty" class="chart-empty"><span>⌁</span><b>No report yet</b><small>Add transactions and come back to see your month.</small></div></div></article><article class="panel"><div class="panel-head"><div><span class="panel-kicker">NEXT MOVE</span><h3>What to do next</h3></div></div><div id="insightCards" class="insight-cards"></div></article></div></section>
+
+      <section class="view" id="view-settings"><div class="page-head"><div><p class="eyebrow">CONTROL ROOM</p><h1>Settings</h1><p>Change your profile and workspace preferences.</p></div></div><div class="settings-grid"><form class="panel settings-card" id="profileForm"><div class="panel-head"><div><span class="panel-kicker">PROFILE</span><h3>Identity</h3></div></div><label>Display name<input id="settingsName"></label><label>Email<input id="settingsEmail" disabled></label><label>Currency<select id="settingsCurrency"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option></select></label><button class="primary-btn" type="submit">Save profile</button><div id="settingsMsg" class="form-success"></div></form><article class="panel settings-card"><div class="panel-head"><div><span class="panel-kicker">ACCOUNT</span><h3>Privacy by design</h3></div></div><div class="privacy-list"><div><span>01</span><p><b>Your account owns the data</b><small>Transactions are filtered by your signed-in user ID on every API route.</small></p></div><div><span>02</span><p><b>No seeded balances</b><small>This project intentionally starts at zero and only shows what you add.</small></p></div><div><span>03</span><p><b>Export whenever you need</b><small>Download your selected month as a CSV from the top bar.</small></p></div></div></article></div></section>
+    </div>
+  </main>
+</div>
+<div id="sidebarBackdrop" class="backdrop"></div>
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><div><span class="panel-kicker">LEDGER ENTRY</span><h2 id="modalTitle">Add transaction</h2></div><button class="icon-btn" id="closeModal">×</button></div><form id="transactionForm"><div class="segmented"><button type="button" class="seg active" data-kind="expense">Expense</button><button type="button" class="seg" data-kind="income">Income</button></div><input type="hidden" id="formKind" value="expense"><div class="amount-input"><span id="currencyPrefix">₹</span><input id="formAmount" type="number" step="0.01" min="0.01" placeholder="0.00" required><small>Amount</small></div><div class="form-grid"><label>Category<select id="formCategory">{% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}</select></label><label>Date<input id="formDate" type="date" required></label></div><label>Note<input id="formNote" maxlength="280" placeholder="What was this for?"></label><div class="modal-actions"><button type="button" class="soft-btn" id="cancelModal">Cancel</button><button type="submit" class="primary-btn">Save transaction <span>→</span></button></div><div id="formError" class="form-error"></div></form></div></div>
+<div id="toast" class="toast"></div>
+<script>window.CASHFLOW={{ csrf|tojson }};</script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body></html>
